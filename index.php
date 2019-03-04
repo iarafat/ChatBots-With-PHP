@@ -37,23 +37,33 @@ try {
 }*/
 
 // send response to user.
-$facebookReply = [
-    'messaging_type' => 'RESPONSE',
-    'recipient' => [
-        'id' => '2580600762014365'
-    ],
-    'message' => [
-        'text' => 'This is a reply.'
-    ],
-];
-$url = 'https://graph.facebook.com/v3.0/me/messages?access_token='.getenv('FACEBOOK_PAGE_ACCESS_TOKEN');
+if (isset($input['entry'][0]['messaging'][0]['message']['text'])) {
+    // message is from facebook
+    $url = 'https://graph.facebook.com/v3.0/me/messages?access_token=' . getenv('FACEBOOK_PAGE_ACCESS_TOKEN');
+    $reply = [
+        'messaging_type' => 'RESPONSE',
+        'recipient' => [
+            'id' => '2580600762014365'
+        ],
+        'message' => [
+            'text' => 'This is a reply.'
+        ],
+    ];
+} else {
+    $url = 'https://api.telegram.org/bot'.getenv('TELEGRAM_TOKEN').'/sendmessage';
+    $reply = [
+        'chat_id' => '668849417',
+        'text' => 'This is a reply',
+    ];
+}
+
 
 
 $ch = curl_init($url);
 // tell curl to send post request.
 curl_setopt($ch, CURLOPT_POST, 1);
 // attach json string to post fields.
-curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($facebookReply));
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($reply));
 // set the content type
 curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
 // execute
