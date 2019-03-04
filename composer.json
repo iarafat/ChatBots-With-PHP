@@ -5,9 +5,16 @@
     "monolog/monolog": "^1.23",
     "vlucas/phpdotenv": "^2.4"
   },
+  "autoload": {
+    "psr-4":
+    {
+      "App\\": "src/"
+    }
+  },
   "authors": [
     {
-      "name": "MD Iyasin Arafat"
+      "name": "MD Iyasin Arafat",
+      "email": "miyasinarafat@gmail.com"
     }
   ]
 }
